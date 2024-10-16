@@ -1,0 +1,74 @@
+Table: Customers
+
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| id          | int     |
+| name        | varchar |
++-------------+---------+
+id is the primary key (column with unique values) for this table.
+Each row of this table indicates the ID and name of a customer.
+ 
+
+Table: Orders
+
++-------------+------+
+| Column Name | Type |
++-------------+------+
+| id          | int  |
+| customerId  | int  |
++-------------+------+
+id is the primary key (column with unique values) for this table.
+customerId is a foreign key (reference columns) of the ID from the Customers table.
+Each row of this table indicates the ID of an order and the ID of the customer who ordered it.
+ 
+
+Write a solution to find all customers who never order anything.
+
+Return the result table in any order.
+
+The result format is in the following example.
+
+ 
+
+Example 1:
+
+Input: 
+Customers table:
++----+-------+
+| id | name  |
++----+-------+
+| 1  | Joe   |
+| 2  | Henry |
+| 3  | Sam   |
+| 4  | Max   |
++----+-------+
+Orders table:
++----+------------+
+| id | customerId |
++----+------------+
+| 1  | 3          |
+| 2  | 1          |
++----+------------+
+Output: 
++-----------+
+| Customers |
++-----------+
+| Henry     |
+| Max       |
++-----------+
+
+𝐬𝐨𝐥𝐮𝐭𝐢𝐨𝐧:
+select c.name as customers from customers c
+where c.id not in (select customerid from orders)
+
+if customers will not order then there ids will not presrnt in customer id column of orders table  we are cehcking id not in customer id of orders
+
+
+#𝐮𝐬𝐢𝐧𝐠 𝐣𝐨𝐢𝐧𝐬 
+(by left join we will get all values and i am equating to customer id popele who didnt have customer id in orders table null values witll come and i kept condition for cutsomerid=null only that will fetctched)
+If we want to fetch cusyomers who made atleadt one order then we write not null condiytion
+select c.name as customers from customers  c
+left join orders o 
+on c.id=o.customerid
+where o.customerId is null

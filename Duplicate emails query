@@ -1,0 +1,76 @@
+
+
+𝐐𝐮𝐞𝐬𝐭𝐢𝐨𝐧:
+Table: Person
+
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| id          | int     |
+| email       | varchar |
++-------------+---------+
+id is the primary key (column with unique values) for this table.
+Each row of this table contains an email. The emails will not contain uppercase letters.
+ 
+
+Write a solution to report all the duplicate emails. Note that it's guaranteed that the email field is not NULL.
+
+Return the result table in any order.
+
+The result format is in the following example.
+
+ 
+
+𝐄𝐱𝐚𝐦𝐩𝐥𝐞 𝟏:
+Input: 
+Person table:
++----+---------+
+| id | email   |
++----+---------+
+| 1  | a@b.com |
+| 2  | c@d.com |
+| 3  | a@b.com |
++----+---------+
+Output: 
++---------+
+| Email   |
++---------+
+| a@b.com |
++---------+
+Explanation: a@b.com is repeated two times.
+
+# 𝐈𝐧𝐭𝐮𝐢𝐭𝐢𝐨𝐧
+By seeing the problem statement I got an idea to count the emails to know how many times it present in the table.
+
+# 𝐀𝐩𝐩𝐫𝐨𝐚𝐜𝐡
+So when we count no of times particular emails present in the table then we all know duplicate means 2 or more then I filtered based on the dupliacte condition
+
+# 𝐂𝐨𝐝𝐞
+```
+𝟏)𝐀𝐩𝐩𝐫𝐨𝐚𝐜𝐡 𝐮𝐬𝐢𝐧𝐠 𝐣𝐨𝐢𝐧𝐬:
+As we want to find duplicates from the same table we need to work with that table itself and compare its values using self join.we cant check values of same id we checked for p1.id!=p2.id condition and we checked for same emails existence to avoid duplicates we added distinct keyword to remove duplicates in output
+
+select distinct  p1.email from person p1 join person p2
+on p1.email=p2.email
+where p1.id!=p2.id
+
+𝟐)𝐆𝐫𝐨𝐮𝐩𝐢𝐧𝐠 𝐚𝐧𝐝 𝐟𝐥𝐢𝐭𝐞𝐫𝐢𝐧𝐠 𝐚𝐩𝐩𝐫𝐨𝐚𝐜𝐡
+Below approach is grouping,counting emails in the table and checking or flitering out emails if emails>=2 then will get only distinct emails with count of emails=1
+
+select email from person group by email 
+having count(email)>=2
+
+
+𝐖𝐫𝐢𝐭𝐞 𝐚 𝐬𝐨𝐥𝐮𝐭𝐢𝐨𝐧 𝐭𝐨 𝐝𝐞𝐥𝐞𝐭𝐞 𝐚𝐥𝐥 𝐝𝐮𝐩𝐥𝐢𝐜𝐚𝐭𝐞 𝐞𝐦𝐚𝐢𝐥𝐬, 𝐤𝐞𝐞𝐩𝐢𝐧𝐠 𝐨𝐧𝐥𝐲 𝐨𝐧𝐞 𝐮𝐧𝐢𝐪𝐮𝐞 𝐞𝐦𝐚𝐢𝐥 𝐰𝐢𝐭𝐡 𝐭𝐡𝐞 𝐬𝐦𝐚𝐥𝐥𝐞𝐬𝐭 𝐢𝐝.
+
+For SQL users, please note that you are supposed to write a DELETE statement and not a SELECT one.
+
+For Pandas users, please note that you are supposed to modify Person in place.
+
+After running your script, the answer shown is the Person table. The driver will first compile and run your piece of code and then show the Person table. The final order of the Person table does not matter.
+
+delete p1 from person p1 join person p2 
+where p1.email=p2.email and p1.id>p2.id
+or
+delete p1 from person p1, person p2 
+where p1.email=p2.email and p1.id>p2.id

@@ -1,0 +1,65 @@
+Table: Orders
+
++-----------------+----------+
+| Column Name     | Type     |
++-----------------+----------+
+| order_number    | int      |
+| customer_number | int      |
++-----------------+----------+
+order_number is the primary key (column with unique values) for this table.
+This table contains information about the order ID and the customer ID.
+ 
+
+Write a solution to find the customer_number for the customer who has placed the largest number of orders.
+
+The test cases are generated so that exactly one customer will have placed more orders than any other customer.
+
+The result format is in the following example.
+
+ 
+
+Example 1:
+
+Input: 
+Orders table:
++--------------+-----------------+
+| order_number | customer_number |
++--------------+-----------------+
+| 1            | 1               |
+| 2            | 2               |
+| 3            | 3               |
+| 4            | 3               |
++--------------+-----------------+
+Output: 
++-----------------+
+| customer_number |
++-----------------+
+| 3               |
++-----------------+
+Explanation: 
+The customer with number 3 has two orders, which is greater than either customer 1 or 2 because each of them only has one order. 
+So the result is customer_number 3.
+ 
+
+Follow up: What if more than one customer has the largest number of orders, can you find all the customer_number in this case?
+
+𝟏)𝐚𝐩𝐩𝐫𝐨𝐚𝐜𝐡 𝐮𝐬𝐢𝐧𝐠 𝐠𝐫𝐨𝐮𝐩𝐛𝐲 𝐚𝐧𝐝 𝐨𝐫𝐝𝐞𝐫 𝐛𝐲
+select customer_number from orders
+group by customer_number order by count(customer_number) desc limit 1
+
+we need to find who have more orders for atht in customer_id table whose id is more times repeated tehn that person have more orders .for taht first group using csutomer number and count the occures and arrange in desc to get perosn whith more orders 
+and to retrievr only one use limit 1
+
+𝟐)𝐈𝐟 𝐦𝐨𝐫𝐞 𝐭𝐡𝐚𝐧 𝐨𝐧𝐞 𝐜𝐮𝐬𝐭𝐨𝐦𝐞𝐫 𝐡𝐚𝐬 𝐦𝐨𝐫𝐞 𝐨𝐫𝐝𝐞𝐫𝐬 𝐰𝐢𝐭𝐡 𝐥𝐢𝐦𝐢𝐭 𝟏 𝐜𝐚𝐬𝐞 𝐰𝐞 𝐜𝐚𝐧𝐭 𝐟𝐢𝐧𝐝 𝐢𝐭.𝐬𝐨 𝐰𝐞 𝐮𝐬𝐞 𝐫𝐚𝐧𝐤 𝐟𝐮𝐧𝐜𝐭𝐢𝐨𝐧 𝐭𝐨 𝐝𝐨 𝐢𝐭.(rank or dense we can use use)
+SELECT customer_number
+FROM (
+    SELECT 
+        customer_number, 
+        RANK() OVER (ORDER BY COUNT(order_number) DESC) AS customer_rank
+    FROM Orders
+    GROUP BY customer_number
+) AS ranked_customers
+WHERE customer_rank = 1;
+
+
+
